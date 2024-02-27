@@ -7,7 +7,7 @@ build_and_prune() {
     local DF_SUFFIX="$2"
     local http_proxy="$3:"
     local https_proxy="$4:"
-    docker_args=("--build-arg CACHEBUST=1")
+    docker_args=()
     if [ -n "$HTTP_PROXY" ]; then
         docker_args+=("--build-arg http_proxy=${HTTP_PROXY}")
     fi
@@ -15,7 +15,7 @@ build_and_prune() {
         docker_args+=("--build-arg https_proxy=${HTTPS_PROXY}")
     fi
     # Build Docker image and perform cleaning operation
-    docker build ./ "${docker_args[@]}" -f dev/docker/Dockerfile${DF_SUFFIX} -t ${TARGET}:latest && yes | docker container prune && yes 
+    docker build ./ --build-arg CACHEBUST=1 "${docker_args[@]}" -f dev/docker/Dockerfile${DF_SUFFIX} -t ${TARGET}:latest && yes | docker container prune && yes 
     docker image prune -f
 }
 
