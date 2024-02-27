@@ -9,10 +9,8 @@ build_and_prune() {
     # local https_proxy="$4:-"
 
     # Build Docker image and perform cleaning operation
-    docker build ./ \
-        --build-arg CACHEBUST=1 \
-        -f dev/docker/Dockerfile${DF_SUFFIX} \
-        -t ${TARGET}:latest && yes | docker container prune && yes | docker image prune -f
+    docker build ./ --build-arg CACHEBUST=1 -f dev/docker/Dockerfile${DF_SUFFIX} -t ${TARGET}:latest && yes | docker container prune && yes 
+    docker image prune -f
 }
 
 run_docker() {
