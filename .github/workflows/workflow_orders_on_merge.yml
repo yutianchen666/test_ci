@@ -1,0 +1,30 @@
+name: llm-ray inference & finetune
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/**'
+      - 'docker/**'
+      - 'common/**'
+      - 'dev/docker/**'
+      - 'finetune/**'
+      - 'inference/**'
+      - 'rlhf/**'
+      - 'tools/**'
+      - 'pyproject.toml'
+      - 'tests/**'
+
+jobs:
+  call-lint:
+    uses: ./.github/workflows/workflow_lint.yml
+
+  call-tests:
+    uses: ./.github/workflows/workflow_tests.yml
+    
+  call-inference:
+    uses: ./.github/workflows/workflow_inference.yml
+
+  call-finetune:
+    uses: ./.github/workflows/workflow_finetune.yml

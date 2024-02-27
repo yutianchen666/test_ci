@@ -1,0 +1,46 @@
+name: Finetune on Intel GPU
+
+on:
+  workflow_call:
+    inputs:
+      runner_container_image:
+        type: string
+        default: '10.1.2.13:5000/llmray-build'
+      http_proxy:
+        type: string
+        default: 'http://10.24.221.149:911'
+      https_proxy:
+        type: string
+        default: 'http://10.24.221.149:911'
+
+jobs:
+  finetune:
+    name: finetune on gpu test
+    strategy:
+      matrix:
+        model: [ meta-llama/Llama-2-7b-chat-hf ]
+    runs-on: self-hosted
+
+    defaults:
+      run:
+        shell: bash
+    container:
+      image: ${{ inputs.runner_container_image }}
+      env:
+        http_proxy: ${{ inputs.http_proxy }}
+        https_proxy: ${{ inputs.https_proxy }}
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Running task on Intel GPU
+        run: |
+          rm ~/borealis-runner/llm-on-ray.tar.gz -f
+          tar zcf ~/borealis-runner/llm-on-ray.tar.gz -C ~/actions-runner/_work/llm-on-ray .
+          cd ~/borealis-runner/
+          python3 finetune_on_pvc.py --need_create_conda_env true --base_models "${{ matrix.model }}"
+      - name: Test Summary
+        run: echo "to be continued"
