@@ -7,7 +7,7 @@ build_and_prune() {
     local DF_SUFFIX="$2"
     local http_proxy="$3:"
     local https_proxy="$4:"
-    local python_v="$5"
+    local python_v="$5:"
     docker_args=()
     if [ -n "$http_proxy" ]; then
         docker_args+=("--build-arg http_proxy=${HTTP_PROXY}")
