@@ -5,19 +5,21 @@ build_and_prune() {
     # Set TARGET and DF-SUFFIX using the passed in parameters
     local TARGET="$1"
     local DF_SUFFIX="$2"
-    local HTTP_PROXY="$3:"
-    local HTTPS_PROXY="$4:"
-    local python_v="$5:"
+    local PYTHON_V="$3:"
+    local HTTP_PROXY="$4:"
+    local HTTPS_PROXY="$5:"
+    
     docker_args=()
+    if [ -n "$python_v" ]; then
+        docker_args+=("--build-arg python_v=${PYTHON_V}")
+    fi
     if [ -n "$HTTP_PROXY" ]; then
         docker_args+=("--build-arg http_proxy=${HTTP_PROXY}")
     fi
     if [ -n "$HTTPS_PROXY" ]; then
         docker_args+=("--build-arg https_proxy=${HTTPS_PROXY}")
     fi
-    if [ -n "$python_v" ]; then
-        docker_args+=("--build-arg python_v=${python_v}")
-    fi
+    
     # Build Docker image and perform cleaning operation
     docker build ./ --build-arg CACHEBUST=1 "${docker_args[@]}" -f dev/docker/Dockerfile${DF_SUFFIX} -t ${TARGET}:latest && yes | docker container prune && yes 
     docker image prune -f
