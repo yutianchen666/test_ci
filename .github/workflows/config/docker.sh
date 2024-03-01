@@ -10,7 +10,7 @@ build_and_prune() {
     local HTTPS_PROXY="$5:"
     
     docker_args=()
-    docker_args+=("--build-arg CACHEBUST=1")
+    docker_args+=("--build-arg CACHEBUST 1")
     if [ -n "$PYTHON_V" ]; then
         docker_args+=("--build-arg python_v=${PYTHON_V}")
     fi
