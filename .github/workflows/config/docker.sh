@@ -5,14 +5,14 @@ build_and_prune() {
     # Set TARGET and DF-SUFFIX using the passed in parameters
     local TARGET="$1"
     local DF_SUFFIX="$2"
-    local http_proxy="$3:"
-    local https_proxy="$4:"
+    local HTTP_PROXY="$3:"
+    local HTTPS_PROXY="$4:"
     local python_v="$5:"
     docker_args=()
-    if [ -n "$http_proxy" ]; then
+    if [ -n "$HTTP_PROXY" ]; then
         docker_args+=("--build-arg http_proxy=${HTTP_PROXY}")
     fi
-    if [ -n "$https_proxy" ]; then
+    if [ -n "$HTTPS_PROXY" ]; then
         docker_args+=("--build-arg https_proxy=${HTTPS_PROXY}")
     fi
     if [ -n "$python_v" ]; then
