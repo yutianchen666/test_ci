@@ -11,7 +11,7 @@ build_and_prune() {
     
     docker_args=()
     if [ -n "$PYTHON_V" ]; then
-        docker_args+=("--python_v PYTHON_V")
+        docker_args+=("--python_v ${PYTHON_V}")
     fi
     if [ -n "$HTTP_PROXY" ]; then
         docker_args+=("--build-arg http_proxy=${HTTP_PROXY}")
