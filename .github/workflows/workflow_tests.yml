@@ -95,22 +95,26 @@ jobs:
           echo "target is ${target}"
           echo "target=$target" >> $GITHUB_OUTPUT
 
+      - name: Source build script  
+        run: |
+          ssource .github/workflows/scripts/docker.sh
+
       - name: Build Docker Image
         run: |
           DF_SUFFIX=".cpu_and_deepspeed_test"
           TARGET=${{steps.target.outputs.target}}
           python_v=${{matrix.python-version}}
-          # source .github/workflows/scripts/docker.sh ## only once set
-          bash .github/workflows/scripts/docker.sh build_and_prune TARGET=${TARGET} DF_SUFFIX=${DF_SUFFIX} PYTHON_V=${python_v} ## need change
+          build_and_prune TARGET=${TARGET} DF_SUFFIX=${DF_SUFFIX} PYTHON_V=${python_v} ## need change
           # docker build ./ --build-arg CACHEBUST=1 --build-arg python_v=${{matrix.python-version}} -f dev/docker/Dockerfile${DF_SUFFIX} -t ${TARGET}:latest && yes | docker container prune && yes
           # docker image prune -f
-
+          docker images
       - name: Start Docker Container
         run: |
           TARGET=${{steps.target.outputs.target}}
-          # source .github/workflows/scripts/docker.sh
-          bash .github/workflows/scripts/docker.sh clean_docker  TARGET=${TARGET} 
-          bash .github/workflows/scripts/docker.sh run_docker TARGET=${TARGET} code_checkout_path=${{ github.workspace }}
+          docker images
+          clean_docker  TARGET=${TARGET} 
+          docker images
+          run_docker TARGET=${TARGET} code_checkout_path=${{ github.workspace }}
           # cid=$(docker ps -q --filter "name=${TARGET}")
           # if [[ ! -z "$cid" ]]; then docker stop $cid && docker rm $cid; fi
           # # check and remove exited container
