@@ -15,10 +15,10 @@ build_and_prune() {
     echo "${PYTHON_V}"
     docker_args=()
     docker_args+=("--build-arg=CACHEBUST=1")
-    if [! -z "$PYTHON_V" ]; then
+    if [[! -z "$PYTHON_V" ]]; then
         docker_args+=("--build-arg=python_v=${PYTHON_V}")
     fi
-    if [! -z "$USE_PROXY" ]; then
+    if [[! -z "$USE_PROXY" ]]; then
         docker_args+=("--build-arg=http_proxy=${HTTP_PROXY}")
         docker_args+=("--build-arg=https_proxy=${HTTPS_PROXY}")
     fi
