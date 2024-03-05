@@ -112,23 +112,24 @@ jobs:
           TARGET=${{steps.target.outputs.target}}
           code_checkout_path=${{ github.workspace }}
           source docker.sh
-          docker images
-          # clean_docker  TARGET=${TARGET} 
-          docker images
-          # run_docker TARGET=${TARGET} code_checkout_path=${code_checkout_path}
-          cid=$(docker ps -q --filter "name=${TARGET}")
-          if [[ ! -z "$cid" ]]; then docker stop $cid && docker rm $cid; fi
-          # check and remove exited container
-          cid=$(docker ps -a -q --filter "name=${TARGET}")
-          if [[ ! -z "$cid" ]]; then docker rm $cid; fi
-          docker ps -a
-          docker run -tid -v ${{ github.workspace }}:/root/llm-on-ray --name="${TARGET}" --hostname="${TARGET}-container" ${TARGET}:latest
+          # docker images
+          clean_docker  TARGET=${TARGET} 
+          run_docker TARGET=${TARGET} code_checkout_path=${code_checkout_path}
+            
+          # cid=$(docker ps -q --filter "name=${TARGET}")
+          # if [[ ! -z "$cid" ]]; then docker stop $cid && docker rm $cid; fi
+          # # check and remove exited container
+          # cid=$(docker ps -a -q --filter "name=${TARGET}")
+          # if [[ ! -z "$cid" ]]; then docker rm $cid; fi
+          # docker ps -a
+          # docker run -tid -v ${{ github.workspace }}:/root/llm-on-ray --name="${TARGET}" --hostname="${TARGET}-container" ${TARGET}:latest
 
       - name: Install Dependencies for Tests
         run: |
           TARGET=${{steps.target.outputs.target}}
-          source .github/workflows/scripts/docker.sh
-          docker_bash TARGET=${TARGET}  bash_command={}"pip install -r ./tests/requirements.txt"}
+          bash_command="pip install -r ./tests/requirements.txt"
+          source docker.sh
+          docker_bash TARGET=${TARGET}  bash_command=${bash_command}
           # docker exec "${TARGET}" bash -c "pip install -r ./tests/requirements.txt"
 
       - name: Start Ray Cluster
