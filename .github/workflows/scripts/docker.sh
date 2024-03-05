@@ -12,17 +12,14 @@ build_and_prune() {
     local DF_SUFFIX=$DF_SUFFIX
     local PYTHON_V=$PYTHON_V
     local USE_PROXY=$USE_PROXY
-    echo "${PYTHON_V}"
+
     docker_args=()
     docker_args+=("--build-arg=CACHEBUST=1")
-    if [ -z "$PYTHON_V" ]; then
-        # docker_args+=("--build-arg=python_v=${PYTHON_V}")
-        echo "no_python"
-    else
+    if [ -n "$PYTHON_V" ]; then
         docker_args+=("--build-arg=python_v=${PYTHON_V}")
     fi
 
-    if [[! -z "$USE_PROXY" ]]; then
+    if [ -n "$USE_PROXY" ]; then
         docker_args+=("--build-arg=http_proxy=${HTTP_PROXY}")
         docker_args+=("--build-arg=https_proxy=${HTTPS_PROXY}")
     fi
