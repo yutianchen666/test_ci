@@ -15,7 +15,7 @@ build_and_prune() {
     
     docker_args=()
     docker_args+=("--build-arg=CACHEBUST=1")
-    if [ -n "$PYTHON_V" ]; then
+    if [! -z "$PYTHON_V" ]; then
         docker_args+=("--build-arg=python_v=${PYTHON_V}")
     fi
     if [! -z "$USE_PROXY" ]; then
@@ -26,6 +26,8 @@ build_and_prune() {
     # Build Docker image and perform cleaning operation
     docker build ./ "${docker_args[@]}" -f dev/docker/Dockerfile${DF_SUFFIX} -t ${TARGET}:latest && yes | docker container prune && yes 
     docker image prune -f
+
+    echo "docker build ./ ${docker_args[@]} -f dev/docker/Dockerfile${DF_SUFFIX} -t ${TARGET}:latest && yes | docker container prune && yes | docker image prune -f"
 }
 
 clean_docker(){
