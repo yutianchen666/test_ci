@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-#define HTTP_PROXY='http://10.24.221.149:911'
-#define HTTPS_PROXY='http://10.24.221.149:911'
-#define MODEL_CACHE_PATH_LOACL='/root/.cache/huggingface/hub'
-#define CODE_CHECKOUT_PATH_LOCAL='/root/llm-on-ray'
+HTTP_PROXY='http://10.24.221.149:911'
+HTTPS_PROXY='http://10.24.221.149:911'
+MODEL_CACHE_PATH_LOACL='/root/.cache/huggingface/hub'
+CODE_CHECKOUT_PATH_LOCAL='/root/llm-on-ray'
 
 build_and_prune() {
     # Set TARGET and DF-SUFFIX using the passed in parameters
