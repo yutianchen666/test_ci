@@ -10,14 +10,11 @@ build_and_prune() {
     # Set TARGET and DF-SUFFIX using the passed in parameters
     local TARGET=$TARGET
     local DF_SUFFIX=$DF_SUFFIX
-    local PYTHON_V=$PYTHON_V
+    local PYTHON_V=$PYTHON_V  ## same name
     local USE_PROXY=$USE_PROXY
 
-    echo "${PYTHON_V}"
     docker_args=()
     docker_args+=("--build-arg=CACHEBUST=1")
-    # docker_args+=("--build-arg=python_v=${PYTHON_V}")
-    # docker_args+=("--build-arg=http_proxy=${HTTP_PROXY}")
 
     if [ -n "$PYTHON_V" ]; then
         docker_args+=("--build-arg=python_v=${PYTHON_V}")
@@ -28,13 +25,13 @@ build_and_prune() {
         docker_args+=("--build-arg=https_proxy=${HTTPS_PROXY}")
     fi
     
-    echo "docker build ./ ${docker_args[@]} --build-arg=python_v=${PYTHON_V} -f dev/docker/Dockerfile${DF_SUFFIX} -t ${TARGET}:latest && yes | docker container prune && yes | docker image prune -f"
+    echo "docker build ./ ${docker_args[@]} -f dev/docker/Dockerfile${DF_SUFFIX} -t ${TARGET}:latest && yes | docker container prune && yes | docker image prune -f"
 
     # Build Docker image and perform cleaning operation
     docker build ./ "${docker_args[@]}" -f dev/docker/Dockerfile${DF_SUFFIX} -t ${TARGET}:latest && yes | docker container prune && yes 
     docker image prune -f
 
-    echo "docker build ./ ${docker_args[@]} -f dev/docker/Dockerfile${DF_SUFFIX} -t ${TARGET}:latest && yes | docker container prune && yes | docker image prune -f"
+    
 }
 
 clean_docker(){
@@ -60,10 +57,10 @@ run_docker() {
     docker_args+=("--name="${TARGET}"" )
     docker_args+=("--hostname="${TARGET}-container"")
 
-    if [[! -z "$model_cache_path" ]]; then
+    if [-n "$model_cache_path" ]; then
         docker_args+=("-v="${{model_cache_path }}:${MODEL_CACHE_PATH_LOACL}"")
     fi
-    if [[! -z "$USE_PROXY" ]]; then
+    if [-n "$USE_PROXY" ]; then
         docker_args+=("-e=http_proxy=${HTTP_PROXY}")
         docker_args+=("-e=https_proxy=${HTTPS_PROXY}")
     fi
