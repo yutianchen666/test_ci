@@ -110,14 +110,14 @@ jobs:
           TARGET=${{steps.target.outputs.target}}
           source .github/workflows/scripts/docker.sh
           clean_docker  TARGET=${TARGET} 
-          run_docker TARGET=${TARGET} code_checkout_path=${{ github.workspace }}
+          # run_docker TARGET=${TARGET} code_checkout_path=${{ github.workspace }}
           # cid=$(docker ps -q --filter "name=${TARGET}")
           # if [[ ! -z "$cid" ]]; then docker stop $cid && docker rm $cid; fi
           # # check and remove exited container
           # cid=$(docker ps -a -q --filter "name=${TARGET}")
           # if [[ ! -z "$cid" ]]; then docker rm $cid; fi
           # docker ps -a
-          # docker run -tid -v ${{ github.workspace }}:/root/llm-on-ray --name="${TARGET}" --hostname="${TARGET}-container" ${TARGET}:latest
+          docker run -tid -v ${{ github.workspace }}:/root/llm-on-ray --name="${TARGET}" --hostname="${TARGET}-container" ${TARGET}:latest
 
       - name: Install Dependencies for Tests
         run: |
