@@ -13,6 +13,7 @@ build_and_prune() {
     local PYTHON_V=$PYTHON_V
     local USE_PROXY=$USE_PROXY
 
+    echo "${PYTHON_V}"
     docker_args=()
     docker_args+=("--build-arg=CACHEBUST=1")
     docker_args+=("--build-arg=python_v=${PYTHON_V}")
