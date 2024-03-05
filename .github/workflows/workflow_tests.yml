@@ -115,7 +115,7 @@ jobs:
           docker images
           clean_docker  TARGET=${TARGET} 
           docker images
-          run_docker TARGET=${TARGET} code_checkout_path=${code_checkout_path}
+          # run_docker TARGET=${TARGET} code_checkout_path=${code_checkout_path}
           # cid=$(docker ps -q --filter "name=${TARGET}")
           # if [[ ! -z "$cid" ]]; then docker stop $cid && docker rm $cid; fi
           # # check and remove exited container
