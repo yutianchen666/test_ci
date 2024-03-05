@@ -97,7 +97,7 @@ jobs:
 
       - name: Source build script  
         run: |
-          source .github/workflows/scripts/docker.sh
+          . .github/workflows/scripts/docker.sh
 
       - name: Build Docker Image
         run: |
