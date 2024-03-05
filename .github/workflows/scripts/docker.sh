@@ -8,10 +8,10 @@ set -eo pipefail
 
 build_and_prune() {
     # Set TARGET and DF-SUFFIX using the passed in parameters
-    local TARGET="$TARGET"
-    local DF_SUFFIX="$DF_SUFFIX"
-    local PYTHON_V="$PYTHON_V"
-    local USE_PROXY="$USE_PROXY"
+    local TARGET=$TARGET
+    local DF_SUFFIX=$DF_SUFFIX
+    local PYTHON_V=$PYTHON_V
+    local USE_PROXY=$USE_PROXY
     echo "${PYTHON_V}"
     docker_args=()
     docker_args+=("--build-arg=CACHEBUST=1")
