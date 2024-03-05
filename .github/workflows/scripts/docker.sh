@@ -53,9 +53,9 @@ run_docker() {
     
 
     docker_args=()
-    docker_args+=("-v="${code_checkout_path}:${CODE_CHECKOUT_PATH_LOCAL}"")
-    docker_args+=("--name="${TARGET}"" )
-    docker_args+=("--hostname="${TARGET}-container"")
+    docker_args+=("-v=${code_checkout_path}:${CODE_CHECKOUT_PATH_LOCAL}")
+    docker_args+=("--name=${TARGET}" )
+    docker_args+=("--hostname=${TARGET}-container")
 
     if [-n "$model_cache_path" ]; then
         docker_args+=("-v="${{model_cache_path }}:${MODEL_CACHE_PATH_LOACL}"")
