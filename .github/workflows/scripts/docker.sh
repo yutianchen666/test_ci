@@ -15,7 +15,7 @@ build_and_prune() {
 
     echo "${PYTHON_V}"
     docker_args=()
-    docker_args+=("--build-arg=CACHEBUST=1")
+    docker_args+=("--build-arg CACHEBUST=1")
     docker_args+=("--build-arg=python_v=${PYTHON_V}")
     docker_args+=("--build-arg=http_proxy=${HTTP_PROXY}")
 
