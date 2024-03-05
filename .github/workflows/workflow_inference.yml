@@ -95,7 +95,7 @@ jobs:
           fi
           TARGET=${{steps.target.outputs.target}}
           source .github/workflows/config/docker.sh
-          build_and_prune TARGET DF_SUFFIX ${{ inputs.http_proxy }} ${{ inputs.https_proxy }}
+          build_and_prune TARGET DF_SUFFIX 
           # docker build ./ --build-arg CACHEBUST=1 --build-arg http_proxy=${{ inputs.http_proxy }} --build-arg https_proxy=${{ inputs.https_proxy }} -f dev/docker/Dockerfile${DF_SUFFIX} -t ${TARGET}:latest && yes | docker container prune && yes
           # docker image prune -f
 
