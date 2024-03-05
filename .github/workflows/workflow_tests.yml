@@ -100,8 +100,8 @@ jobs:
           DF_SUFFIX=".cpu_and_deepspeed_test"
           TARGET=${{steps.target.outputs.target}}
           python_v=${{matrix.python-version}}
-          source .github/workflows/scripts/docker.sh ## only once set
-          build_and_prune TARGET=${TARGET} DF_SUFFIX=${DF_SUFFIX} PYTHON_V=${python_v} ## need change
+          # source .github/workflows/scripts/docker.sh ## only once set
+          bash .github/workflows/scripts/docker.sh build_and_prune TARGET=${TARGET} DF_SUFFIX=${DF_SUFFIX} PYTHON_V=${python_v} ## need change
           # docker build ./ --build-arg CACHEBUST=1 --build-arg python_v=${{matrix.python-version}} -f dev/docker/Dockerfile${DF_SUFFIX} -t ${TARGET}:latest && yes | docker container prune && yes
           # docker image prune -f
 
@@ -109,15 +109,15 @@ jobs:
         run: |
           TARGET=${{steps.target.outputs.target}}
           # source .github/workflows/scripts/docker.sh
-          # clean_docker  TARGET=${TARGET} 
-          # run_docker TARGET=${TARGET} code_checkout_path=${{ github.workspace }}
-          cid=$(docker ps -q --filter "name=${TARGET}")
-          if [[ ! -z "$cid" ]]; then docker stop $cid && docker rm $cid; fi
-          # check and remove exited container
-          cid=$(docker ps -a -q --filter "name=${TARGET}")
-          if [[ ! -z "$cid" ]]; then docker rm $cid; fi
-          docker ps -a
-          docker run -tid -v ${{ github.workspace }}:/root/llm-on-ray --name="${TARGET}" --hostname="${TARGET}-container" ${TARGET}:latest
+          bash .github/workflows/scripts/docker.sh clean_docker  TARGET=${TARGET} 
+          bash .github/workflows/scripts/docker.sh run_docker TARGET=${TARGET} code_checkout_path=${{ github.workspace }}
+          # cid=$(docker ps -q --filter "name=${TARGET}")
+          # if [[ ! -z "$cid" ]]; then docker stop $cid && docker rm $cid; fi
+          # # check and remove exited container
+          # cid=$(docker ps -a -q --filter "name=${TARGET}")
+          # if [[ ! -z "$cid" ]]; then docker rm $cid; fi
+          # docker ps -a
+          # docker run -tid -v ${{ github.workspace }}:/root/llm-on-ray --name="${TARGET}" --hostname="${TARGET}-container" ${TARGET}:latest
 
       - name: Install Dependencies for Tests
         run: |
