@@ -64,7 +64,7 @@ run_docker() {
         docker_args+=("-e=http_proxy=${HTTP_PROXY}")
         docker_args+=("-e=https_proxy=${HTTPS_PROXY}")
     fi
-
+    echo "docker run -tid  "${docker_args[@]}" "${TARGET}:latest""
     docker run -tid  "${docker_args[@]}" "${TARGET}:latest"
 }
 
