@@ -8,58 +8,58 @@ on:
         default: 'pr'
 
 jobs:
-  bare-test:
+  # bare-test:
 
-    name: bare-test
-    strategy:
-      matrix:
-        python-version: [3.9, 3.10, 3.11]
-        isPR:
-          - ${{inputs.ci_type == 'pr'}}
+  #   name: bare-test
+  #   strategy:
+  #     matrix:
+  #       python-version: [3.9, 3.10, 3.11]
+  #       isPR:
+  #         - ${{inputs.ci_type == 'pr'}}
 
-        exclude:
-          - { isPR: true }
+  #       exclude:
+  #         - { isPR: true }
 
-        include:
-          - {python-version: "3.9"}
-          - {python-version: "3.10"}
-          - {python-version: "3.11"}
+  #       include:
+  #         - {python-version: "3.9"}
+  #         - {python-version: "3.10"}
+  #         - {python-version: "3.11"}
 
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
+  #   runs-on: ubuntu-latest
+  #   defaults:
+  #     run:
+  #       shell: bash
       
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{matrix.python-version}}
-          architecture: 'x64'
+  #     - name: Set up Python
+  #       uses: actions/setup-python@v4
+  #       with:
+  #         python-version: ${{matrix.python-version}}
+  #         architecture: 'x64'
 
-      - name: Display Python version
-        run: |
-          python -c "import sys; print(sys.version)"
+  #     - name: Display Python version
+  #       run: |
+  #         python -c "import sys; print(sys.version)"
 
-      - name: Install dependencies for tests
-        run: |
-          python -m pip install --upgrade pip
-          pip install .[cpu] --extra-index-url https://download.pytorch.org/whl/cpu --extra-index-url https://pytorch-extension.intel.com/release-whl/stable/cpu/us/
-          # Dynamic link oneCCL and Intel MPI libraries
-          source $(python -c "import oneccl_bindings_for_pytorch as torch_ccl; print(torch_ccl.cwd)")/env/setvars.sh
-          # Additional libraries required for pytest
-          pip install -r ./tests/requirements.txt
+  #     - name: Install dependencies for tests
+  #       run: |
+  #         python -m pip install --upgrade pip
+  #         pip install .[cpu] --extra-index-url https://download.pytorch.org/whl/cpu --extra-index-url https://pytorch-extension.intel.com/release-whl/stable/cpu/us/
+  #         # Dynamic link oneCCL and Intel MPI libraries
+  #         source $(python -c "import oneccl_bindings_for_pytorch as torch_ccl; print(torch_ccl.cwd)")/env/setvars.sh
+  #         # Additional libraries required for pytest
+  #         pip install -r ./tests/requirements.txt
           
-      - name: Start Ray Cluster
-        run: |
-          ray start --head
+  #     - name: Start Ray Cluster
+  #       run: |
+  #         ray start --head
 
-      - name: Start tests
-        run: |
-          ./tests/run-tests.sh
+  #     - name: Start tests
+  #       run: |
+  #         ./tests/run-tests.sh
 
   docker-test:
 
@@ -98,13 +98,13 @@ jobs:
       - name: Source build script  
         run: |
           cp .github/workflows/scripts/docker.sh .
-          . docker.sh
 
       - name: Build Docker Image
         run: |
           DF_SUFFIX=".cpu_and_deepspeed_test"
           TARGET=${{steps.target.outputs.target}}
           python_v=${{matrix.python-version}}
+          source docker.sh
           build_and_prune TARGET=${TARGET} DF_SUFFIX=${DF_SUFFIX} PYTHON_V=${python_v} ## need change
           # docker build ./ --build-arg CACHEBUST=1 --build-arg python_v=${{matrix.python-version}} -f dev/docker/Dockerfile${DF_SUFFIX} -t ${TARGET}:latest && yes | docker container prune && yes
           # docker image prune -f
@@ -112,6 +112,7 @@ jobs:
       - name: Start Docker Container
         run: |
           TARGET=${{steps.target.outputs.target}}
+          source docker.sh
           docker images
           clean_docker  TARGET=${TARGET} 
           docker images
