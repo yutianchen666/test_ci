@@ -108,7 +108,7 @@ jobs:
       - name: Start Docker Container
         run: |
           TARGET=${{steps.target.outputs.target}}
-          source .github/workflows/scripts/docker.sh
+          # source .github/workflows/scripts/docker.sh
           # clean_docker  TARGET=${TARGET} 
           # run_docker TARGET=${TARGET} code_checkout_path=${{ github.workspace }}
           cid=$(docker ps -q --filter "name=${TARGET}")
