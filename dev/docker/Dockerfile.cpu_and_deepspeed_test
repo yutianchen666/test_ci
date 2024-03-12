@@ -5,7 +5,7 @@ ARG python_v
 
 ENV LANG C.UTF-8
 
-RUN set -eo pipefail
+RUN set -e
 
 WORKDIR /root/llm-on-ray
 
