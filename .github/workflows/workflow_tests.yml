@@ -79,7 +79,8 @@ jobs:
           # - {python-version: "3.11"}
 
     runs-on: ubuntu-latest
-    continue-on-error: false
+    env:
+      SHELL: /bin/bash -eo pipefail
     defaults:
       run:
         shell: bash
@@ -101,7 +102,6 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          set -e
           DF_SUFFIX=".cpu_and_deepspeed_test"
           TARGET=${{steps.target.outputs.target}}
           # PYTHON_V=${{matrix.python-version}}
