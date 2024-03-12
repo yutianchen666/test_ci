@@ -5,8 +5,6 @@ ARG python_v
 
 ENV LANG C.UTF-8
 
-RUN set -e
-
 WORKDIR /root/llm-on-ray
 
 RUN --mount=type=cache,target=/var/cache/apt apt-get update -y \

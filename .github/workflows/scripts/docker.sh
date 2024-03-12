@@ -29,10 +29,10 @@ build_and_prune() {
 
     # Build Docker image and perform cleaning operation
     docker build ./ "${docker_args[@]}" -f dev/docker/Dockerfile${DF_SUFFIX} -t ${TARGET}:latest && yes | docker container prune && yes 
-    # if [ $? -ne 0 ]; then
-    #         echo "Docker build failed"
-    #         exit 1
-    # fi
+    if [ $? -ne 0 ]; then
+            echo "Docker build failed"
+            exit 1
+    fi
     docker image prune -f
 
     
