@@ -79,7 +79,7 @@ jobs:
           - {python-version: "3.11"}
 
     runs-on: ubuntu-latest
-
+    continue-on-error: false
     defaults:
       run:
         shell: bash
