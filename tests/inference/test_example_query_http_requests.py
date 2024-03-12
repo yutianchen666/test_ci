@@ -47,6 +47,8 @@ def script_with_args(model_name, streaming_response, max_new_tokens, temperature
     # Ensure there are no errors in the http query script execution
     assert "Error" not in result_http.stderr
 
+    assert result_http.returncode == 0
+
     assert isinstance(result_http.stdout, str)
 
     assert len(result_http.stdout) > 0

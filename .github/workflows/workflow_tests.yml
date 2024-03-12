@@ -66,21 +66,11 @@ jobs:
     name: docker-test
     strategy:
       matrix:
-        python-version: [3.9, 3.10, 3.11]
-        isPR:
-          - ${{inputs.ci_type == 'pr'}}
-
-        exclude:
-          - { isPR: true }
-
-        include:
-          - {python-version: "3.9"}
-          # - {python-version: "3.10"}
-          # - {python-version: "3.11"}
+        python-version: ["3.9", 3.10, "3.11"]
 
     runs-on: ubuntu-latest
     env:
-      SHELL: /bin/bash -eo pipefail
+      SHELL: bash -eo pipefail
     defaults:
       run:
         shell: bash
@@ -104,7 +94,7 @@ jobs:
         run: |
           DF_SUFFIX=".cpu_and_deepspeed_test"
           TARGET=${{steps.target.outputs.target}}
-          # PYTHON_V=${{matrix.python-version}}
+          PYTHON_V=${{matrix.python-version}}
           source docker.sh
           build_and_prune TARGET=${TARGET} DF_SUFFIX=${DF_SUFFIX} PYTHON_V=${PYTHON_V}
           docker images
