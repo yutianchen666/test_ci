@@ -101,6 +101,7 @@ jobs:
 
       - name: Build Docker Image
         run: |
+          set -e
           DF_SUFFIX=".cpu_and_deepspeed_test"
           TARGET=${{steps.target.outputs.target}}
           # PYTHON_V=${{matrix.python-version}}
