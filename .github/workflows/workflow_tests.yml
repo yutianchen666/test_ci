@@ -69,11 +69,11 @@ jobs:
         python-version: ["3.9", 3.10, "3.11"]
 
     runs-on: ubuntu-latest
-    env:
-      SHELL: bash -eo pipefail
+    # env:
+    #   SHELL: bash -eo pipefail
     defaults:
       run:
-        shell: bash
+        shell: bash -eo pipefail
 
     steps:
       - name: Checkout
